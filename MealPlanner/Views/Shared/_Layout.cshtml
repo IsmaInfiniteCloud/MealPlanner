@@ -15,22 +15,20 @@
         <nav class="navbar navbar-expand-sm navbar-light bg-28A745 border-bottom box-shadow mb-3">
     <style>
                 .navbar {
-                    background-color: #007BFF;
+                    background-color: green;
                 }
                 
-
     </style>
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">MealPlanner</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="~/images/logo/logo.jpg" style="width:55px;height:52px" alt="MealPlanner logo">
+                </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                     <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        @if (User.Identity.IsAuthenticated)
+                            @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="Meals" asp-action="Index">My Meals</a>
@@ -47,7 +45,7 @@
                             <li class="nav-item">
                                 <form class="d-flex">
                                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                                    <button class="btn btn-success" type="submit">Search</button>
+                                    <button class="btn btn-warning" type="submit">Search</button>
                                 </form>
                             </li>
                         }
