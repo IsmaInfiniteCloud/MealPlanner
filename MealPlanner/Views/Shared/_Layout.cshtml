@@ -12,13 +12,9 @@
 </head>
 <body>
     <header>
+  
+
         <nav class="navbar navbar-expand-sm navbar-light bg-28A745 border-bottom box-shadow mb-3">
-    <style>
-                .navbar {
-                    background-color: green;
-                }
-                
-    </style>
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
                     <img src="~/images/logo/logo.jpg" style="width:55px;height:52px" alt="MealPlanner logo">
@@ -28,30 +24,30 @@
                 </button>
                 <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                     <ul class="navbar-nav">
-                            @if (User.Identity.IsAuthenticated)
+                        @if (User.Identity.IsAuthenticated)
                         {
-                         @*   <li class="nav-item">
-                                <a class="nav-link" asp-controller="Meals" asp-action="Index">My Meals</a>
-                            </li>*@
+                            @*<li class="nav-item">
+                        <a class="nav-link" asp-controller="Meals" asp-action="Index">My Meals</a>
+                        </li>*@
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="MealPlans" asp-action="Index">My Meal Plans</a>
                             </li>
-                           @* <li class="nav-item">
-                                <a class="nav-link" asp-controller="Ingredients" asp-action="Index">My Ingredients</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Recipes" asp-action="Index">My Recipes</a>
-                            </li>*@
+                            @*<li class="nav-item">
+                        <a class="nav-link" asp-controller="Ingredients" asp-action="Index">My Ingredients</a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link" asp-controller="Recipes" asp-action="Index">My Recipes</a>
+                        </li>*@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Meals" asp-action="MealSearchForm">Search</a>
                             </li>
-                   
                         }
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
             </div>
         </nav>
+
 
 
 
