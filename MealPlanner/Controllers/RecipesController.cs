@@ -71,6 +71,7 @@ namespace MealPlanner.Controllers
             {
                 _context.Add(recipe);
                 await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Recipe added successfully!";
                 return RedirectToAction(nameof(Index));
             }
             return View(recipe);
@@ -81,6 +82,7 @@ namespace MealPlanner.Controllers
         {
             if (id == null || _context.Recipe == null)
             {
+
                 return NotFound();
             }
 
@@ -89,6 +91,7 @@ namespace MealPlanner.Controllers
             {
                 return NotFound();
             }
+            
             return View(recipe);
         }
 
@@ -122,6 +125,7 @@ namespace MealPlanner.Controllers
                         throw;
                     }
                 }
+                TempData["SuccessMessage"] = "Recipe updated successfully!";
                 return RedirectToAction(nameof(Index));
             }
             return View(recipe);
