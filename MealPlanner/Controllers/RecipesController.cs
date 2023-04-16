@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MealPlanner.Data;
 using MealPlanner.Models;
+using Microsoft.Data.SqlClient;
 
 namespace MealPlanner.Controllers
 {
@@ -176,15 +177,10 @@ namespace MealPlanner.Controllers
             try
             {
                 var userId = User.Identity != null && User.Identity.IsAuthenticated ? User.Identity.Name : null;
-                var review = new RecipeReview
-                {
-                    RecipeId = recipeId,
-                    UserId = userId,
-                    Rating = rating,
-                    ReviewText = reviewText
-                };
-                _context.RecipeReview.Add(review);
-                await _context.SaveChangesAsync();
+
+                
+                var sql = "EXEC dbo.AddRecipeReview @RecipeId, @UserId, @Rating, @ReviewText";
+                await _context.Database.ExecuteSqlRawAsync(sql, new SqlParameter("@RecipeId", recipeId), new SqlParameter("@UserId", userId ?? (object)DBNull.Value), new SqlParameter("@Rating", rating), new SqlParameter("@ReviewText", reviewText));
 
                 var recipe = await _context.Recipe.FindAsync(recipeId);
                 if (recipe == null)
@@ -203,6 +199,7 @@ namespace MealPlanner.Controllers
                 return Problem("An error occurred while submitting the review.", null, 500, ex.Message);
             }
         }
+
 
 
         private bool RecipeExists(int id)
