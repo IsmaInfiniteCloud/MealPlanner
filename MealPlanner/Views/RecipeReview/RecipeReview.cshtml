@@ -1,0 +1,21 @@
+﻿@model RecipeViewModel
+
+<!-- Display existing ratings and reviews -->
+@foreach (var review in Model.Reviews)
+{
+    <div>
+        <p>Rating: @review.Rating</p>
+        <p>Review: @review.ReviewText</p>
+        <p>Submitted by: @review.UserId</p>
+    </div>
+}
+
+<!-- Form for submitting new rating and review -->
+<form method="post" action="/Recipes/SubmitReview">
+    <input type="hidden" name="recipeId" value="@Model.Id" />
+    <label for="rating">Rating:</label>
+    <input type="number" name="rating" min="1" max="5" required />
+    <label for="reviewText">Review:</label>
+    <textarea name="reviewText" required></textarea>
+    <button type="submit">Submit</button>
+</form>
