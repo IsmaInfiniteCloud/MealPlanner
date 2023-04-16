@@ -10,8 +10,7 @@
     <a class="btn btn-primary" asp-action="Create">Create a new Recipe</a>
 </p>
 <a class="btn btn-secondary" asp-controller="Ingredients" asp-action="Index">see list of available Ingredients</a>
-<br>
-<br>
+
 <table class="table">
     <thead>
         <tr>
@@ -28,16 +27,23 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                    <strong> @Html.DisplayFor(modelItem => item.Name)</strong>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Instructions)
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
+                <td>
+                    <div class="btn-group">
+                        <a class="btn btn-secondary" href="@Url.Action("Edit", new { id = item.Id })">Edit</a>
+                        <a class="btn btn-warning" href="@Url.Action("Details", new { id = item.Id })">Details</a>
+                        <a class="btn btn-danger" href="@Url.Action("Delete", new { id = item.Id })">Delete</a>
+                        <form method="post" action="/Recipes/SubmitReview">
+                        <a class="btn btn-success" href="@Url.Action("SubmitReview", new { recipeId = item.Id })" method="post">Write a Review</a>
+                        </form>
+
+                     </div>
+                </td>
+
         </tr>
 }
     </tbody>

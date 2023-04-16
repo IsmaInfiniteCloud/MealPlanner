@@ -24,26 +24,23 @@
         </dd>
     </dl>
 </div>
-
-<div>
-    <h4>Reviews</h4>
-    <hr />
-    @if (Model.Reviews.Count > 0)
+<hr />
+@if (Model.Reviews.Count > 0)
+{
+    foreach (var review in Model.Reviews)
     {
-        foreach (var review in Model.Reviews)
-        {
-            <div>
-                <p>@review.Rating stars - by @review.UserId</p>
-                <p>@review.ReviewText</p>
-            </div>
-        }
+        <div>
+            <p><span class="golden-star">@Html.Raw(new string('★', review.Rating))</span> - by @review.UserId.Split('@')[0]</p>
+            <p style="font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;font-size:larger">@review.ReviewText</p>
+        </div>
     }
-    else
-    {
-        <p>No reviews yet.</p>
-    }
-</div>
+}
+else
+{
+    <p>No reviews yet.</p>
+}
 
+<hr />
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Recipe.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>

@@ -170,22 +170,32 @@ namespace MealPlanner.Controllers
         {
             try
             {
+                var userId = User.Identity.IsAuthenticated ? User.Identity.Name : null;
                 var review = new RecipeReview
                 {
                     RecipeId = recipeId,
-                    UserId = User.Identity.Name,
+                    UserId = userId,
                     Rating = rating,
                     ReviewText = reviewText
                 };
                 _context.RecipeReview.Add(review);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Details", "Recipes", new { id = recipeId });
+
+                _context.RecipeReview.Add(review);
+                await _context.SaveChangesAsync();
+
+                var recipe = await _context.Recipe.FindAsync(recipeId);
+                var reviews = await _context.RecipeReview.Where(r => r.RecipeId == recipeId).ToListAsync();
+                var viewModel = new RecipeViewModel { Recipe = recipe, Reviews = reviews };
+                return View(viewModel);
             }
             catch (Exception ex)
             {
                 return Problem("An error occurred while submitting the review.", null, 500, ex.Message);
             }
         }
+
+
 
         private bool RecipeExists(int id)
         {
