@@ -1,8 +1,11 @@
-using MealPlanner.Data;
+﻿using MealPlanner.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<MealPlannerContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("MealPlannerContext") ?? throw new InvalidOperationException("Connection string 'MealPlannerContext' not found.")));
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
