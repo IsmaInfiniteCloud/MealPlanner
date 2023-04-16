@@ -1,0 +1,3 @@
+﻿INSERT INTO [dbo].[AspNetUsers] (Id, UserName, NormalizedUserName, Email, NormalizedEmail, EmailConfirmed, PasswordHash, SecurityStamp, ConcurrencyStamp, PhoneNumberConfirmed, TwoFactorEnabled, LockoutEnabled, AccessFailedCount)
+VALUES ('1', 'ismail', 'ISMAIL', 'ismail@admin.ca', 'ISMAIL@ADMIN.CA', 1, 'AQAAAAEAACcQAAAAECJW6CvT2TgeT6TzTJ6bKZmUv4e4mOvoCX4L8B89i6dKlh82T1TzT+puQK1Nq3vUA==', 'JDONPYFV7W35GJL67V7PKUBC6YZZ5R5R', '5b69af5e-d32b-4852-8d45-3e7c82120138', 0, 0, 1, 0),
+       ('2', 'tess', 'TESS', 'tess@admin.ca', 'TESS@ADMIN.CA', 1, 'AQAAAAEAACcQAAAAEOzOivimrJr8yl+krbOFMwkr0CJ06fN5p5a5RZj+JOKUnPTzPxdROq3Ntg+1btQ/LQ==', 'KMSH7XZ3H2ZC7LN32UYPMIYGRL7VJW6B', '12e042ca-56ea-4d67-9e31-6b62ab14674a', 0, 0, 1, 0);
