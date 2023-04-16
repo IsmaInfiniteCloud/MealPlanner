@@ -6,5 +6,10 @@
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public List<Meal> Meals { get; set; }
+
+        public MealPlan()
+        {
+            
+        }
     }
 }
