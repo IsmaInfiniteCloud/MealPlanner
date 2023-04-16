@@ -1,0 +1,13 @@
+﻿@model RecipeViewModel
+
+<h3>Reviews</h3>
+<ul class="list-group">
+    @foreach (var review in Model.Reviews)
+    {
+        <li class="list-group-item">
+            <h5>@review.Rating / 5 Stars</h5>
+            <p>@review.ReviewText</p>
+            <small>By: @review.UserId</small>
+        </li>
+    }
+</ul>

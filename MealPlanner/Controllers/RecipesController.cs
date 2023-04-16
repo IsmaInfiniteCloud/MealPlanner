@@ -164,13 +164,14 @@ namespace MealPlanner.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // POST: Recipes/SubmitReview
+
+
         [HttpPost]
         public async Task<IActionResult> SubmitReview(int recipeId, int rating, string reviewText)
         {
             try
             {
-                var userId = User.Identity.IsAuthenticated ? User.Identity.Name : null;
+                var userId = User.Identity != null && User.Identity.IsAuthenticated ? User.Identity.Name : null;
                 var review = new RecipeReview
                 {
                     RecipeId = recipeId,
@@ -181,20 +182,21 @@ namespace MealPlanner.Controllers
                 _context.RecipeReview.Add(review);
                 await _context.SaveChangesAsync();
 
-                _context.RecipeReview.Add(review);
-                await _context.SaveChangesAsync();
-
                 var recipe = await _context.Recipe.FindAsync(recipeId);
+                if (recipe == null)
+                {
+                    return NotFound($"Recipe with id {recipeId} not found.");
+                }
                 var reviews = await _context.RecipeReview.Where(r => r.RecipeId == recipeId).ToListAsync();
                 var viewModel = new RecipeViewModel { Recipe = recipe, Reviews = reviews };
-                return View(viewModel);
+                return RedirectToAction("Details", new { id = recipe.Id });
+
             }
             catch (Exception ex)
             {
                 return Problem("An error occurred while submitting the review.", null, 500, ex.Message);
             }
         }
-
 
 
         private bool RecipeExists(int id)

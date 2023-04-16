@@ -1,0 +1,15 @@
+﻿@model RecipeViewModel
+
+<h3>Submit a review</h3>
+<form asp-controller="Recipes" asp-action="SubmitReview" method="post">
+    <input type="hidden" asp-for="Recipe.Id" name="recipeId" />
+    <div class="form-group">
+        <label for="rating">Rating</label>
+        <input type="number" id="rating" name="rating" min="1" max="5" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label for="reviewText">Review Text</label>
+        <textarea id="reviewText" name="reviewText" class="form-control" rows="3" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit Review</button>
+</form>
