@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MealPlanner.Data;
 using MealPlanner.Models;
+using Microsoft.Data.SqlClient;
 
 namespace MealPlanner.Controllers
 {
@@ -51,17 +52,17 @@ namespace MealPlanner.Controllers
             return View();
         }
 
-        // POST: MealPlans/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,StartDate,EndDate")] MealPlan mealPlan)
+        public async Task<IActionResult> Create([Bind("StartDate,EndDate")] MealPlan mealPlan)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(mealPlan);
-                await _context.SaveChangesAsync();
+                var startDateParam = new SqlParameter("@StartDate", mealPlan.StartDate);
+                var endDateParam = new SqlParameter("@EndDate", mealPlan.EndDate);
+
+                await _context.Database.ExecuteSqlRawAsync("EXECUTE CreateMealPlan @StartDate, @EndDate", startDateParam, endDateParam);
+
                 return RedirectToAction(nameof(Index));
             }
             return View(mealPlan);
