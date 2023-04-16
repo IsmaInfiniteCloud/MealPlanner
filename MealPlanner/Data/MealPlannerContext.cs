@@ -9,6 +9,8 @@ namespace MealPlanner.Data
 {
     public class MealPlannerContext : DbContext
     {
+        internal readonly object RecipeReviews;
+
         public MealPlannerContext (DbContextOptions<MealPlannerContext> options)
             : base(options)
         {
@@ -21,5 +23,6 @@ namespace MealPlanner.Data
         public DbSet<MealPlanner.Models.Meal>? Meal { get; set; }
 
         public DbSet<MealPlanner.Models.MealPlan>? MealPlan { get; set; }
+        public DbSet<RecipeReview> RecipeReview { get; set; } 
     }
 }

@@ -27,7 +27,6 @@ namespace MealPlanner.Controllers
                           Problem("Entity set 'MealPlannerContext.Recipe'  is null.");
         }
 
-        // GET: Recipes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Recipe == null)
@@ -35,15 +34,25 @@ namespace MealPlanner.Controllers
                 return NotFound();
             }
 
-            var recipe = await _context.Recipe
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var recipe = await _context.Recipe.FirstOrDefaultAsync(m => m.Id == id);
             if (recipe == null)
             {
                 return NotFound();
             }
 
-            return View(recipe);
+            var reviews = await _context.RecipeReview
+                .Where(r => r.RecipeId == id)
+                .ToListAsync();
+
+            var viewModel = new RecipeViewModel
+            {
+                Recipe = recipe,
+                Reviews = reviews
+            };
+
+            return View(viewModel);
         }
+
 
         // GET: Recipes/Create
         public IActionResult Create()
@@ -155,9 +164,32 @@ namespace MealPlanner.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // POST: Recipes/SubmitReview
+        [HttpPost]
+        public async Task<IActionResult> SubmitReview(int recipeId, int rating, string reviewText)
+        {
+            try
+            {
+                var review = new RecipeReview
+                {
+                    RecipeId = recipeId,
+                    UserId = User.Identity.Name,
+                    Rating = rating,
+                    ReviewText = reviewText
+                };
+                _context.RecipeReview.Add(review);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Details", "Recipes", new { id = recipeId });
+            }
+            catch (Exception ex)
+            {
+                return Problem("An error occurred while submitting the review.", null, 500, ex.Message);
+            }
+        }
+
         private bool RecipeExists(int id)
         {
-          return (_context.Recipe?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Recipe?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

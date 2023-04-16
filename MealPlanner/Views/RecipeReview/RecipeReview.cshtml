@@ -12,7 +12,7 @@
 
 <!-- Form for submitting new rating and review -->
 <form method="post" action="/Recipes/SubmitReview">
-    <input type="hidden" name="recipeId" value="@Model.Id" />
+    <input type="hidden" name="recipeId" value="@Model.Recipe.Id" />
     <label for="rating">Rating:</label>
     <input type="number" name="rating" min="1" max="5" required />
     <label for="reviewText">Review:</label>
