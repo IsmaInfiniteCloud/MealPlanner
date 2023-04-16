@@ -189,6 +189,8 @@ namespace MealPlanner.Controllers
                 }
                 var reviews = await _context.RecipeReview.Where(r => r.RecipeId == recipeId).ToListAsync();
                 var viewModel = new RecipeViewModel { Recipe = recipe, Reviews = reviews };
+                TempData["SuccessMessage"] = "Review submitted successfully!";
+
                 return RedirectToAction("Details", new { id = recipe.Id });
 
             }

@@ -1,8 +1,33 @@
-﻿@model MealPlanner.Models.RecipeViewModel
+﻿@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success" id="success-message">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(function () {
+            const successMessage = document.getElementById("success-message");
+            if (successMessage) {
+                successMessage.style.transition = "opacity 1s";
+                successMessage.style.opacity = 0;
+                setTimeout(function () {
+                    successMessage.style.display = "none";
+                }, 1000);
+            }
+        }, 3000);
+    });
+</script>
+
+
+@model MealPlanner.Models.RecipeViewModel
 
 @{
     ViewData["Title"] = "Details";
 }
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <h1>Details</h1>
 <partial name="_SubmitReview.cshtml" model="Model" />
