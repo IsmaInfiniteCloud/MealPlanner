@@ -17,5 +17,9 @@ namespace MealPlanner.Data
         public DbSet<MealPlanner.Models.Ingredient> Ingredient { get; set; } = default!;
 
         public DbSet<MealPlanner.Models.Recipe>? Recipe { get; set; }
+
+        public DbSet<MealPlanner.Models.Meal>? Meal { get; set; }
+
+        public DbSet<MealPlanner.Models.MealPlan>? MealPlan { get; set; }
     }
 }
