@@ -1,0 +1,31 @@
+﻿
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" integrity="sha512-WU6b+U6rsP5o5A5p5S5V/fLvR+iRw2Vz1HJG4f3qP4oUp6mXYBjKmynm/KFrwiTFvALYzLZXUeaa0j0nC8pEkw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha512-Y8xnH+yYwBzswZpA30WJKk1dLHtXbC1s9sDUGnJSdAxvltKaxcJlz0ZetC04T2T2j+TJGAd1XsD0uxl8s+DkYw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+</head>
+
+<div class="form-group">
+    <label for="SearchDate" class="control-label"></label>
+    <div class="input-group date">
+        <input type="text" name="SearchDate" id="SearchDate" class="form-control" autocomplete="off" />
+        <div class="input-group-append">
+            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+        </div>
+    </div>
+    <h6>Enter the date of the meal plan you're looking for and hit search</h6>
+</div>
+<script>
+    $(function () {
+        $('#SearchDate').datepicker({
+            format: 'yyyy-mm-dd',
+            todayHighlight: true,
+            autoclose: true,
+        });
+    });
+</script>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

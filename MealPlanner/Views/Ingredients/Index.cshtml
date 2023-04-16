@@ -3,12 +3,13 @@
 @{
     ViewData["Title"] = "Index";
 }
-
 <h1>Ingredients</h1>
 
 <p>
-    <a asp-action="Create">Create New Ingredient</a>
+    <a class="btn btn-primary" asp-action="Create">Create New Ingredient</a>
 </p>
+<a class="btn btn-secondary" asp-controller="Recipes" asp-action="Index">see list of available Recipes</a>
+
 <table class="table">
     <thead>
         <tr>

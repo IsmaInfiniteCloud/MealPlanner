@@ -156,8 +156,8 @@ namespace MealPlanner.Controllers
         }
 
 
-        // GET: Meals/showSearchForm
-        public async Task<IActionResult> showSearchForm()
+        // GET: Meals/MealSearchForm
+        public async Task<IActionResult> MealSearchForm()
         {
             return View();
         }

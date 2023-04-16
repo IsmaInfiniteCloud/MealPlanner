@@ -30,20 +30,20 @@
                     <ul class="navbar-nav">
                             @if (User.Identity.IsAuthenticated)
                         {
-                            <li class="nav-item">
+                         @*   <li class="nav-item">
                                 <a class="nav-link" asp-controller="Meals" asp-action="Index">My Meals</a>
-                            </li>
+                            </li>*@
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="MealPlans" asp-action="Index">My Meal Plans</a>
                             </li>
-                            <li class="nav-item">
+                           @* <li class="nav-item">
                                 <a class="nav-link" asp-controller="Ingredients" asp-action="Index">My Ingredients</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="Recipes" asp-action="Index">My Recipes</a>
-                            </li>
+                            </li>*@
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Meals" asp-action="ShowSearchForm">Search</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Meals" asp-action="MealSearchForm">Search</a>
                             </li>
                    
                         }

@@ -7,8 +7,11 @@
 <h1>Your Recipes</h1>
 
 <p>
-    <a asp-action="Create">Create a new Recipe</a>
+    <a class="btn btn-primary" asp-action="Create">Create a new Recipe</a>
 </p>
+<a class="btn btn-secondary" asp-controller="Ingredients" asp-action="Index">see list of available Ingredients</a>
+<br>
+<br>
 <table class="table">
     <thead>
         <tr>
