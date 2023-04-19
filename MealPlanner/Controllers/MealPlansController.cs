@@ -156,16 +156,6 @@ namespace MealPlanner.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: MealPlans/Search
-        public async Task<IActionResult> Search(DateTime searchDate)
-        {
-            var mealPlans = await _context.MealPlan
-                .Include(mp => mp.Meals)
-                .Where(mp => mp.StartDate <= searchDate && mp.EndDate >= searchDate)
-                .ToListAsync();
-
-            return View(mealPlans);
-        }
 
 
         private bool MealPlanExists(int id)

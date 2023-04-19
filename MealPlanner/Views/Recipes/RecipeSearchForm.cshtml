@@ -1,42 +1,44 @@
-﻿<head>
+﻿@model MealPlanner.Models.Recipe
+
+@{
+    ViewData["Title"] = "RecipeSearchForm";
+}
+
+<head>
     <link rel="stylesheet" href="https://cdn.tailwindcss.com" />
 </head>
 
 <div class="container" style="text-align: center;">
     <h2 class="text-text-center" style="font-size:45px;color:yellow;background-color:navy">
         <i class="bi bi-search"></i>
-        Search for a meal
+        Search for a Recipe
     </h2>
     <hr class="my-4">
 </div>
 
 
 <div class="w-full md:w-1/2 mx-auto">
-    <form asp-action="ShowSearchResults" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <form asp-action="showSearchResults" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
         <div class="mb-4">
             <h4>
-                Enter the name of the meal you're looking for and hit search
+                Enter the name of the recipe you're looking for and hit search
             </h4>
             <br><br>
-            <input name="SearchPhrase" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Meal name">
+            <input name="SearchPhrase" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Recipe name">
         </div>
         <div class="flex items-center justify-between">
-        
+
             <button type="submit" class="btn-success hover:bg-blue-700 hover:shadow-lg hover:transition hover:duration-500 hover:ease-in-out text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                 Search
             </button>
-     
+
 
         </div>
     </form>
- @*   <div class="text-center">
-        <a asp-action="Index" class="text-gray-500 hover:text-gray-700">Back to List</a>
-    </div>*@
+
 
     <div class="text-center">
         <a asp-action="Index" class="btn btn-secondary">Back to List</a>
     </div>
 
 </div>
-
-

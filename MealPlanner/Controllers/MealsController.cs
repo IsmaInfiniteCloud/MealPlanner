@@ -156,17 +156,6 @@ namespace MealPlanner.Controllers
         }
 
 
-        // GET: Meals/MealSearchForm
-        public async Task<IActionResult> MealSearchForm()
-        {
-            return View();
-        }
-        // GET: Meals/showSearchResults
-        public async Task<IActionResult> showSearchResults(String SearchPhrase)
-        {
-            return View("Index", await _context.Meal.Where(m => m.Name.Contains
-                        (SearchPhrase)).ToListAsync());
-        }
         private bool MealExists(int id)
         {
           return (_context.Meal?.Any(e => e.Id == id)).GetValueOrDefault();
