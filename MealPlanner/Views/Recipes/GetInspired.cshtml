@@ -1,0 +1,24 @@
+﻿@model YourNamespace.Models.Recipe
+@{
+    ViewBag.Title = "Get Inspired";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div>
+    <h3>@Model.Name</h3>
+    <h4>Instructions</h4>
+    <p>@Model.Instructions</p>
+
+    <h4>Ingredients</h4>
+    <ul>
+        @foreach (var ingredient in Model.Ingredients)
+        {
+            <li>@ingredient.Name</li>
+        }
+    </ul>
+</div>
+
+<p>
+    @Html.ActionLink("Try another recipe", "GetInspired")
+</p>

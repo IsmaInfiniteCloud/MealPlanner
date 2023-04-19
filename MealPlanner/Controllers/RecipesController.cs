@@ -206,5 +206,25 @@ namespace MealPlanner.Controllers
         {
             return (_context.Recipe?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+
+        public async Task<IActionResult> GetInspired()
+        {
+            // Exécuter la procédure stockée "GetRandomRecipe" et obtenir le premier résultat (ou défaut)
+            var randomRecipe = await _context.Recipe.FromSqlRaw("EXEC GetRandomRecipe").FirstOrDefaultAsync();
+
+            // Si aucun résultat n'est trouvé, retourner une erreur 404 (non trouvé)
+            if (randomRecipe == null)
+            {
+                return NotFound();
+            }
+
+            // Retourner la vue avec la recette aléatoire
+            return View(randomRecipe);
+        }
+
+
+
+
+
     }
 }
