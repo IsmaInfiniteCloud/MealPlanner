@@ -201,6 +201,19 @@ namespace MealPlanner.Controllers
         }
 
 
+        // GET: Recipes/RecipeSearchForm
+        public async Task<IActionResult> RecipeSearchForm()
+        {
+            return View();
+        }
+        // GET: Meals/showSearchResults
+        public async Task<IActionResult> showSearchResults(String SearchPhrase)
+        {
+            return View("Index", await _context.Recipe.Where(m => m.Name.Contains
+                        (SearchPhrase)).ToListAsync());
+        }
+
+
 
         private bool RecipeExists(int id)
         {
