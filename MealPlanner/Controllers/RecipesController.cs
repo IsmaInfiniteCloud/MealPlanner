@@ -236,7 +236,24 @@ namespace MealPlanner.Controllers
             return View(randomRecipe);
         }
 
+        public IActionResult BestRatedRecipe()
+        {
+            var recette = _context.RecipeReview
+                .GroupBy(r => r.RecipeId)
+                .Select(g => new
+                {
+                    RecipeId = g.Key,
+                    AverageRating = g.Average(r => r.Rating)
+                })
+                .OrderByDescending(r => r.AverageRating)
+                .FirstOrDefault();
 
+            var bestRated = _context.Recipe.FirstOrDefault(r => r.Id == recette.RecipeId);
+
+            
+
+            return View(bestRated);
+        }
 
 
 
