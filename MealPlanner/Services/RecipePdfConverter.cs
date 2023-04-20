@@ -17,11 +17,11 @@ namespace MealPlanner.Services
                     PdfWriter.GetInstance(document, memoryStream);
                     document.Open();
 
-                    // Add recipe content to the PDF document
+                    // rajoute la recette au document PDF 
                     document.Add(new Paragraph(recipe.Name));
                     document.Add(new Paragraph(recipe.Instructions));
 
-                    // Add more content as needed
+                    // rajouter plus de contenu au fichie pdf au besoin
 
                     document.Close();
                 }

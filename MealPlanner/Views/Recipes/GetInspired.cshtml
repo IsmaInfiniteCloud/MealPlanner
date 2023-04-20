@@ -10,13 +10,7 @@
     <h4>Instructions</h4>
     <p>@Model.Instructions</p>
 
-    <h4>Ingredients</h4>
-    <ul>
-        @foreach (var ingredient in Model.Ingredients)
-        {
-            <li>@ingredient.Name</li>
-        }
-    </ul>
+
 </div>
 
 <p>
@@ -92,9 +86,13 @@
     }
 </style>
 
-    <div class="button-container">
-        <button class="btn-btn-success" id="startButton" onclick="hideButton()">We've got a question for you</button>
-    </div>
+<div class="button-container">
+    <button class="btn-btn-success bounce " id="startButton" onclick="hideButton()">
+        &#10145;&#65039; QUESTION &#11013;&#65039;
+    </button>
+</div>
+
+
     <script>
         function hideButton() {
             document.getElementById('startButton').style.display = 'none';
@@ -127,20 +125,27 @@
         "  🚀 Buckle up, foodies! We've got your taste buds covered... 😋"
     ];
 
+    // Boolean flag to track if the text list has been displayed before
+    let textListDisplayed = false;
+
     // Fonction pour afficher les textes un à un et ensuite la recette
     async function displayTextsAndShowRecipe() {
-        for (const text of textList) {
-            fadeText.innerText = text;
-            fadeText.style.opacity = 0;
+        if (!textListDisplayed) {
+            for (const text of textList) {
+                fadeText.innerText = text;
+                fadeText.style.opacity = 0;
 
-            await fadeIn(fadeText);
-            await wait(2000);
-            await fadeOut(fadeText);
+                await fadeIn(fadeText);
+                await wait(2000);
+                await fadeOut(fadeText);
+            }
+
+            // Set the flag to true after the text list has been displayed
+            textListDisplayed = true;
         }
 
         recipeContainer.style.display = "block";
     }
-
     // Fonction pour faire apparaître le texte
     function fadeIn(element) {
         return new Promise(resolve => {

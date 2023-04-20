@@ -19,6 +19,7 @@ using System.IO;
 using Microsoft.CodeAnalysis.RulesetToEditorconfig;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Hosting;
+using iTextSharp.text.pdf.qrcode;
 
 namespace MealPlanner.Controllers
 {
@@ -187,7 +188,29 @@ namespace MealPlanner.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        public IActionResult BestRatedRecipe()
+        {
+            var recette = _context.RecipeReview
+            .GroupBy(r => r.RecipeId)
+            .Select(g => new
+            {
+                RecipeId = g.Key,
+                AverageRating = g.Average(r => r.Rating)
+            })
+            .OrderByDescending(r => r.AverageRating)
+            .FirstOrDefault();
 
+
+            var bestRated = _context.Recipe.FirstOrDefault(r => r.Id == recette.RecipeId);
+
+
+
+
+
+
+
+            return View(bestRated);
+        }
 
 
         [HttpPost]
@@ -221,15 +244,24 @@ namespace MealPlanner.Controllers
 
 
         // GET: Recipes/RecipeSearchForm
+        
         public async Task<IActionResult> RecipeSearchForm()
         {
+            // Renvoie la vue du formulaire de recherche
             return View();
         }
+
         // GET: Meals/showSearchResults
+        
         public async Task<IActionResult> showSearchResults(String SearchPhrase)
         {
-            return View("Index", await _context.Recipe.Where(m => m.Name.Contains
-                        (SearchPhrase)).ToListAsync());
+            // Interroge la base de données pour les recettes qui contiennent la phrase de recherche dans leur nom
+            var searchResults = await _context.Recipe.Where(m => m.Name.Contains(SearchPhrase)).ToListAsync();
+
+            // Renvoie les résultats de recherche en tant que vue appelée "Index"
+            // La vue reçoit les résultats de recherche à l'aide de la méthode ToListAsync,
+            // qui récupère de manière asynchrone les résultats de recherche à partir de la base de données
+            return View("Index", searchResults);
         }
 
 
@@ -262,46 +294,60 @@ namespace MealPlanner.Controllers
         [HttpGet]
         public FileResult SaveRecipeToPDF(int recipeId)
         {
+            // Récupération de la recette à partir de son identifiant
             Recipe recipe = GetRecipeById(recipeId);
+            // Définition du nom de fichier PDF en utilisant le nom de la recette
             string pdfFileName = recipe.Name + ".pdf";
 
-            string pdfDirectoryPath = Path.Combine(_env.WebRootPath, "pdfs"); // <-- Change made here
+            // chemin de dossier pour les fichiers PDF
+            string pdfDirectoryPath = Path.Combine(_env.WebRootPath, "pdfs");
+            
             if (!Directory.Exists(pdfDirectoryPath))
             {
                 Directory.CreateDirectory(pdfDirectoryPath);
             }
 
+            // Définition du chemin complet pour le fichier PDF
             string pdfFilePath = Path.Combine(pdfDirectoryPath, pdfFileName);
 
+            // Utilisation d'un MemoryStream pour écrire le contenu du PDF
             using (MemoryStream memoryStream = new MemoryStream())
             {
+                // Création d'un objet Document et d'un objet PdfWriter
                 Document document = new Document();
                 PdfWriter writer = PdfWriter.GetInstance(document, memoryStream);
 
+                // Ouverture du document
                 document.Open();
 
+                // Ajout du nom de la recette en tant que titre
                 Paragraph recipeName = new Paragraph(recipe.Name);
                 document.Add(recipeName);
 
+                // Ajout des instructions de la recette
                 Paragraph recipeInstructions = new Paragraph(recipe.Instructions);
                 document.Add(recipeInstructions);
 
+                // Vérification s'il y a des ingrédients
                 if (recipe.Ingredients.Count > 0)
                 {
+                    // Création d'une table pour les ingrédients
                     PdfPTable table = new PdfPTable(2);
+                    // Ajout des en-têtes de colonne
                     table.AddCell("Ingredient");
                     table.AddCell("Quantity");
-
-                    // ...
 
                     document.Add(table);
                 }
 
+                // Fermeture du document
                 document.Close();
 
+                // Écriture du contenu du MemoryStream dans le fichier PDF
                 System.IO.File.WriteAllBytes(pdfFilePath, memoryStream.ToArray());
             }
 
+            // Retourne le fichier PDF comme FileResult
             return File(System.IO.File.ReadAllBytes(pdfFilePath), "application/pdf", pdfFileName);
         }
 
@@ -312,9 +358,9 @@ namespace MealPlanner.Controllers
             return _context.Recipe.Where(x => x.Id == id).FirstOrDefault();
         }
 
-        public ActionResult DisplayRecipeById(int id) // Renamed from GetRecipeById
+        public ActionResult DisplayRecipeById(int id) 
         {
-            var recipe = GetRecipeById(id); // Use GetRecipeById instead of _recipeRepository
+            var recipe = GetRecipeById(id);
             return View(recipe);
         }
 
@@ -331,12 +377,14 @@ namespace MealPlanner.Controllers
 
             byte[] pdfBytes = _converter.Convert(recipe);
 
-            // Save the PDF file
+            // Sauvgarde le fichier PDF
             var pdfFileName = $"Recipe_{recipe.Id}.pdf";
             var pdfFilePath = Path.Combine(_env.WebRootPath, "pdfs", pdfFileName);
             await System.IO.File.WriteAllBytesAsync(pdfFilePath, pdfBytes);
 
-            return Ok("Recipe saved as PDF.");
+
+
+            return Ok("Recipe saved as PDF successfully");
         }
 
 
