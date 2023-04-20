@@ -8,24 +8,43 @@ using Microsoft.EntityFrameworkCore;
 using MealPlanner.Data;
 using MealPlanner.Models;
 using Microsoft.Data.SqlClient;
+using System.Reflection.Metadata;
+using Microsoft.AspNetCore.Hosting;
+using iTextSharp.text.pdf;
+using iTextSharp.text;
+using Document = iTextSharp.text.Document;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.IO;
+using Microsoft.CodeAnalysis.RulesetToEditorconfig;
+using Microsoft.Azure.WebJobs;
+using Microsoft.Extensions.Hosting;
 
 namespace MealPlanner.Controllers
 {
+
     public class RecipesController : Controller
     {
         private readonly MealPlannerContext _context;
 
-        public RecipesController(MealPlannerContext context)
+        private readonly IWebHostEnvironment _env;
+
+        private readonly IConverter<Recipe, byte[]> _converter;
+
+
+        public RecipesController(MealPlannerContext context, IConverter<Recipe, byte[]> converter, IWebHostEnvironment env)
         {
             _context = context;
+            _converter = converter;
+            _env = env;
         }
 
         // GET: Recipes
         public async Task<IActionResult> Index()
         {
-              return _context.Recipe != null ? 
-                          View(await _context.Recipe.ToListAsync()) :
-                          Problem("Entity set 'MealPlannerContext.Recipe'  is null.");
+            return _context.Recipe != null ?
+                        View(await _context.Recipe.ToListAsync()) :
+                        Problem("Entity set 'MealPlannerContext.Recipe'  is null.");
         }
 
         public async Task<IActionResult> Details(int? id)
@@ -92,7 +111,7 @@ namespace MealPlanner.Controllers
             {
                 return NotFound();
             }
-            
+
             return View(recipe);
         }
 
@@ -164,7 +183,7 @@ namespace MealPlanner.Controllers
             {
                 _context.Recipe.Remove(recipe);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -178,7 +197,7 @@ namespace MealPlanner.Controllers
             {
                 var userId = User.Identity != null && User.Identity.IsAuthenticated ? User.Identity.Name : null;
 
-                
+
                 var sql = "EXEC dbo.AddRecipeReview @RecipeId, @UserId, @Rating, @ReviewText";
                 await _context.Database.ExecuteSqlRawAsync(sql, new SqlParameter("@RecipeId", recipeId), new SqlParameter("@UserId", userId ?? (object)DBNull.Value), new SqlParameter("@Rating", rating), new SqlParameter("@ReviewText", reviewText));
 
@@ -237,10 +256,92 @@ namespace MealPlanner.Controllers
         }
 
 
+        // ...
 
+        
+        [HttpGet]
+        public FileResult SaveRecipeToPDF(int recipeId)
+        {
+            Recipe recipe = GetRecipeById(recipeId);
+            string pdfFileName = recipe.Name + ".pdf";
+
+            string pdfDirectoryPath = Path.Combine(_env.WebRootPath, "pdfs"); // <-- Change made here
+            if (!Directory.Exists(pdfDirectoryPath))
+            {
+                Directory.CreateDirectory(pdfDirectoryPath);
+            }
+
+            string pdfFilePath = Path.Combine(pdfDirectoryPath, pdfFileName);
+
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                Document document = new Document();
+                PdfWriter writer = PdfWriter.GetInstance(document, memoryStream);
+
+                document.Open();
+
+                Paragraph recipeName = new Paragraph(recipe.Name);
+                document.Add(recipeName);
+
+                Paragraph recipeInstructions = new Paragraph(recipe.Instructions);
+                document.Add(recipeInstructions);
+
+                if (recipe.Ingredients.Count > 0)
+                {
+                    PdfPTable table = new PdfPTable(2);
+                    table.AddCell("Ingredient");
+                    table.AddCell("Quantity");
+
+                    // ...
+
+                    document.Add(table);
+                }
+
+                document.Close();
+
+                System.IO.File.WriteAllBytes(pdfFilePath, memoryStream.ToArray());
+            }
+
+            return File(System.IO.File.ReadAllBytes(pdfFilePath), "application/pdf", pdfFileName);
+        }
+
+
+
+        public Recipe GetRecipeById(int id)
+        {
+            return _context.Recipe.Where(x => x.Id == id).FirstOrDefault();
+        }
+
+        public ActionResult DisplayRecipeById(int id) // Renamed from GetRecipeById
+        {
+            var recipe = GetRecipeById(id); // Use GetRecipeById instead of _recipeRepository
+            return View(recipe);
+        }
+
+
+
+
+        public async Task<ActionResult> SaveRecipeAsPdf(int id)
+        {
+            var recipe = GetRecipeById(id);
+            if (recipe == null)
+            {
+                return NotFound();
+            }
+
+            byte[] pdfBytes = _converter.Convert(recipe);
+
+            // Save the PDF file
+            var pdfFileName = $"Recipe_{recipe.Id}.pdf";
+            var pdfFilePath = Path.Combine(_env.WebRootPath, "pdfs", pdfFileName);
+            await System.IO.File.WriteAllBytesAsync(pdfFilePath, pdfBytes);
+
+            return Ok("Recipe saved as PDF.");
+        }
 
 
 
 
     }
 }
+

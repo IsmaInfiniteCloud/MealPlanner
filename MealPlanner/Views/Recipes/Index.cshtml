@@ -60,6 +60,7 @@
                         <a class="btn btn-secondary" href="@Url.Action("Edit", new { id = item.Id })">Edit</a>
                         <a class="btn btn-warning" href="@Url.Action("Details", new { id = item.Id })">Details</a>
                         <a class="btn btn-danger" href="@Url.Action("Delete", new { id = item.Id })">Delete</a>
+                        <a class="btn btn-info" href="@Url.Action("SaveRecipeAsPdf", "Recipes", new { id = item.Id })">Save as PDF</a>
                      </div>
                 </td>
 

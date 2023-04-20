@@ -1,5 +1,8 @@
 ﻿using MealPlanner.Data;
+using MealPlanner.Models;
+using MealPlanner.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Azure.WebJobs;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -16,6 +19,17 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
+
+
+
+// Register the IConverter<Recipe, byte[]> service
+builder.Services.AddScoped<IConverter<Recipe, byte[]>, RecipePdfConverter>();
+
+builder.Services.AddSingleton<IConverter<Recipe, byte[]>, RecipePdfConverter>();
+
+
+
+
 
 var app = builder.Build();
 

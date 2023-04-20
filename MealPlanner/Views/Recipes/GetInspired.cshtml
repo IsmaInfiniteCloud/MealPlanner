@@ -81,9 +81,20 @@
             background-color: #218838;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
+
+    .button-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        padding: 0;
+    }
 </style>
 
-    <button class="btn-btn-success" id="startButton" onclick="hideButton()">We've got a question for you</button>
+    <div class="button-container">
+        <button class="btn-btn-success" id="startButton" onclick="hideButton()">We've got a question for you</button>
+    </div>
     <script>
         function hideButton() {
             document.getElementById('startButton').style.display = 'none';
@@ -109,10 +120,11 @@
 
     // Liste des textes à afficher
     const textList = [
-        "Ever feel like your stomach is throwing a party and you're not invited?",
-        "Tired of playing the 'what's-for-dinner?' guessing game?",
-        "Looking for some culinary inspiration to spice up your life?",
-        "Buckle up, foodies! We've got your taste buds covered..."
+
+    "🥳 Ever feel like your stomach is throwing a party and you're not invited? 🤷",
+        "🍽️ Are you tired of playing the 'what's -for-dinner ? ' guessing game? 🤔",
+        "🌶️ Looking for some culinary inspiration to spice up your life ? 🔥",
+        "  🚀 Buckle up, foodies! We've got your taste buds covered... 😋"
     ];
 
     // Fonction pour afficher les textes un à un et ensuite la recette
