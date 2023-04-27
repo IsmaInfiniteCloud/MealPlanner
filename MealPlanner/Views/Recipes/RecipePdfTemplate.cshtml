@@ -1,0 +1,35 @@
+﻿@model Recipe
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@Model.Name</title>
+</head>
+<body>
+    <h1>@Model.Name</h1>
+    <h2>Instructions</h2>
+    <p>@Model.Instructions</p>
+    @if (Model.Ingredients.Count > 0)
+    {
+        <h2>Ingredients</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Ingredient</th>
+                    <th>Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var ingredient in Model.Ingredients)
+                {
+                    <tr>
+                        <td>@ingredient.Name</td>
+                        
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</body>
+</html>
