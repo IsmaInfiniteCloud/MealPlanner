@@ -182,21 +182,30 @@ namespace MealPlanner.Controllers
         }
         public IActionResult BestRatedRecipe()
         {
+
             var recette = _context.RecipeReview
             .GroupBy(r => r.RecipeId)
             .Select(g => new
             {
                 RecipeId = g.Key,
-                AverageRating = g.Average(r => r.Rating)
+                AverageRating = g.Average(r => r.Rating),
+                NbreReviews = g.Count()
             })
             .OrderByDescending(r => r.AverageRating)
+            .ThenByDescending(r => r.NbreReviews)
             .FirstOrDefault();
 
+            try {
+                var bestRated = _context.Recipe.FirstOrDefault(r => r.Id == recette.RecipeId);
+                return View(bestRated);
 
-            var bestRated = _context.Recipe.FirstOrDefault(r => r.Id == recette.RecipeId);
+            }
+            catch (System.InvalidOperationException ex) { return View("AddReview"); }
+
+           
 
 
-            return View(bestRated);
+           
         }
 
 
