@@ -282,72 +282,6 @@ namespace MealPlanner.Controllers
             return View(randomRecipe);
         }
 
-
-        // ...
-
-        
-        [HttpGet]
-        public FileResult SaveRecipeToPDF(int recipeId)
-        {
-            // Récupération de la recette à partir de son identifiant
-            Recipe recipe = GetRecipeById(recipeId);
-            // Définition du nom de fichier PDF en utilisant le nom de la recette
-            string pdfFileName = recipe.Name + ".pdf";
-
-            // chemin de dossier pour les fichiers PDF
-            string pdfDirectoryPath = Path.Combine(_env.WebRootPath, "pdfs");
-            
-            if (!Directory.Exists(pdfDirectoryPath))
-            {
-                Directory.CreateDirectory(pdfDirectoryPath);
-            }
-
-            // Définition du chemin complet pour le fichier PDF
-            string pdfFilePath = Path.Combine(pdfDirectoryPath, pdfFileName);
-
-            // Utilisation d'un MemoryStream pour écrire le contenu du PDF
-            using (MemoryStream memoryStream = new MemoryStream())
-            {
-                // Création d'un objet Document et d'un objet PdfWriter
-                Document document = new Document();
-                PdfWriter writer = PdfWriter.GetInstance(document, memoryStream);
-
-                // Ouverture du document
-                document.Open();
-
-                // Ajout du nom de la recette en tant que titre
-                Paragraph recipeName = new Paragraph(recipe.Name);
-                document.Add(recipeName);
-
-                // Ajout des instructions de la recette
-                Paragraph recipeInstructions = new Paragraph(recipe.Instructions);
-                document.Add(recipeInstructions);
-
-                // Vérification s'il y a des ingrédients
-                if (recipe.Ingredients.Count > 0)
-                {
-                    // Création d'une table pour les ingrédients
-                    PdfPTable table = new PdfPTable(2);
-                    // Ajout des en-têtes de colonne
-                    table.AddCell("Ingredient");
-                    table.AddCell("Quantity");
-
-                    document.Add(table);
-                }
-
-                // Fermeture du document
-                document.Close();
-
-                // Écriture du contenu du MemoryStream dans le fichier PDF
-                System.IO.File.WriteAllBytes(pdfFilePath, memoryStream.ToArray());
-            }
-
-            // Retourne le fichier PDF comme FileResult
-            return File(System.IO.File.ReadAllBytes(pdfFilePath), "application/pdf", pdfFileName);
-        }
-
-
-
         public Recipe GetRecipeById(int id)
         {
             return _context.Recipe.Where(x => x.Id == id).FirstOrDefault();
@@ -360,8 +294,6 @@ namespace MealPlanner.Controllers
         }
 
 
-
-
         public async Task<ActionResult> SaveRecipeAsPdf(int id)
         {
             var recipe = GetRecipeById(id);
@@ -369,7 +301,6 @@ namespace MealPlanner.Controllers
             {
                 return NotFound();
             }
-
             byte[] pdfBytes = _converter.Convert(recipe);
 
             // Sauvgarde le fichier PDF
@@ -378,8 +309,7 @@ namespace MealPlanner.Controllers
             await System.IO.File.WriteAllBytesAsync(pdfFilePath, pdfBytes);
 
 
-
-            return Ok("REGARDER DOSSIER pdfs DANS wwwRoot POUR Y TROUVER RECETTE EN PDF.");
+            return Ok("Verifier dossier pdfs Dans wwwRoot pour recuperer la recette en format Pdf.");
         }
 
 
