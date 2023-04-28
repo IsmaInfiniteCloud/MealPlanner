@@ -29,9 +29,6 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<h1>Details</h1>
-<partial name="_SubmitReview.cshtml" model="Model" />
-@*<partial name="_Reviews.cshtml" model="Model" />*@
 
 <div>
     <h4>Recipe</h4>
@@ -52,6 +49,8 @@
     </dl>
 </div>
 <hr />
+<partial name="_SubmitReview.cshtml" model="Model" />
+@*<partial name="_Reviews.cshtml" model="Model" />*@
 @if (Model.Reviews.Count > 0)
 {
     foreach (var review in Model.Reviews)
@@ -59,6 +58,7 @@
         <div>
             <p><span class="golden-star">@Html.Raw(new string('★', review.Rating))</span> - by @review.UserId.Split('@')[0]</p>
             <p style="font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;font-size:larger">@review.ReviewText</p>
+            <hr>
         </div>
     }
 }
