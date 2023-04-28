@@ -30,9 +30,9 @@
 
 
 <h1>Your Recipes</h1><p>
-    <a class="btn btn-primary" asp-action="Create">Create a new Recipe</a>
-    <a class="btn btn-warning" asp-controller="Ingredients" asp-action="Index">See list of available Ingredients</a>
-    <a class="btn btn-info" asp-action="BestRatedRecipe">Best Rated Recipe</a>
+    <a class="btn btn-success" asp-action="Create">Create a new Recipe</a>
+    <a class="btn btn-success" asp-controller="Ingredients" asp-action="Index">Available Ingredients</a>
+    <a class="btn btn-success" asp-action="BestRatedRecipe">Best Rated Recipe</a>
 </p>
 
 <table class="table">
@@ -58,10 +58,10 @@
             </td>
                 <td>
                     <div class="btn-group">
-                        <a class="btn btn-secondary" href="@Url.Action("Edit", new { id = item.Id })">Edit</a>
-                        <a class="btn btn-warning" href="@Url.Action("Details", new { id = item.Id })">Details</a>
-                        <a class="btn btn-danger" href="@Url.Action("Delete", new { id = item.Id })">Delete</a>
-                        <a class="btn btn-info" href="@Url.Action("SaveRecipeAsPdf", "Recipes", new { id = item.Id })">Save as PDF</a>
+                        <a class="btn btn-outline-success" href="@Url.Action("Edit", new { id = item.Id })">Edit</a>
+                        <a class="btn btn-outline-success" href="@Url.Action("Details", new { id = item.Id })">Details</a>
+                        <a class="btn btn-outline-success" href="@Url.Action("Delete", new { id = item.Id })">Delete</a>
+                        <a class="btn btn-outline-success" href="@Url.Action("SaveRecipeAsPdf", "Recipes", new { id = item.Id })">Save as PDF</a>
                      </div>
                 </td>
 

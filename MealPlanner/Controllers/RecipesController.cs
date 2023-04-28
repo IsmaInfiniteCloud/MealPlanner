@@ -204,11 +204,6 @@ namespace MealPlanner.Controllers
             var bestRated = _context.Recipe.FirstOrDefault(r => r.Id == recette.RecipeId);
 
 
-
-
-
-
-
             return View(bestRated);
         }
 
