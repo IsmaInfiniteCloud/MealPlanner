@@ -1,25 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿
+
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+
 using Microsoft.EntityFrameworkCore;
 using MealPlanner.Data;
 using MealPlanner.Models;
 using Microsoft.Data.SqlClient;
-using System.Reflection.Metadata;
-using Microsoft.AspNetCore.Hosting;
-using iTextSharp.text.pdf;
-using iTextSharp.text;
+
 using Document = iTextSharp.text.Document;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System.IO;
-using Microsoft.CodeAnalysis.RulesetToEditorconfig;
+
 using Microsoft.Azure.WebJobs;
-using Microsoft.Extensions.Hosting;
-using iTextSharp.text.pdf.qrcode;
+
+using Microsoft.Net.Http.Headers;
 
 namespace MealPlanner.Controllers
 {
@@ -282,6 +274,10 @@ namespace MealPlanner.Controllers
             return View(randomRecipe);
         }
 
+
+        
+
+
         public Recipe GetRecipeById(int id)
         {
             return _context.Recipe.Where(x => x.Id == id).FirstOrDefault();
@@ -293,7 +289,6 @@ namespace MealPlanner.Controllers
             return View(recipe);
         }
 
-
         public async Task<ActionResult> SaveRecipeAsPdf(int id)
         {
             var recipe = GetRecipeById(id);
@@ -303,16 +298,16 @@ namespace MealPlanner.Controllers
             }
             byte[] pdfBytes = _converter.Convert(recipe);
 
-            // Sauvgarde le fichier PDF
+            
             var pdfFileName = $"Recipe_{recipe.Name}.pdf";
-            var pdfFilePath = Path.Combine(_env.WebRootPath, "pdfs", pdfFileName);
-            await System.IO.File.WriteAllBytesAsync(pdfFilePath, pdfBytes);
-
-
-            return Ok("Verifier dossier pdfs Dans wwwRoot pour recuperer la recette en format Pdf.");
+                        
+            var contentDisposition = new ContentDispositionHeaderValue("attachment")
+            {
+                FileName = pdfFileName
+            };
+            Response.Headers[HeaderNames.ContentDisposition] = contentDisposition.ToString();
+            return new FileContentResult(pdfBytes, "application/pdf");
         }
-
-
 
 
     }
