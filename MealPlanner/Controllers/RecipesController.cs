@@ -373,13 +373,13 @@ namespace MealPlanner.Controllers
             byte[] pdfBytes = _converter.Convert(recipe);
 
             // Sauvgarde le fichier PDF
-            var pdfFileName = $"Recipe_{recipe.Id}.pdf";
+            var pdfFileName = $"Recipe_{recipe.Name}.pdf";
             var pdfFilePath = Path.Combine(_env.WebRootPath, "pdfs", pdfFileName);
             await System.IO.File.WriteAllBytesAsync(pdfFilePath, pdfBytes);
 
 
 
-            return Ok("Recipe saved as PDF successfully");
+            return Ok("REGARDER DOSSIER pdfs DANS wwwRoot POUR Y TROUVER RECETTE EN PDF.");
         }
 
 
